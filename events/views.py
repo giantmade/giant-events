@@ -16,7 +16,9 @@ class EventIndex(ListView):
         """
         Add published queryset to the context
         """
-        context = super().get_context_data(object_list=Event.objects.published(), **kwargs)
+        context = super().get_context_data(
+            object_list=Event.objects.published(), **kwargs
+        )
         return context
 
 

@@ -22,31 +22,41 @@ class EventAdmin(admin.ModelAdmin):
     Admin config for Event model
     """
 
-    list_display = getattr(settings, "EVENT_ADMIN_LIST_DISPLAY", ["title", "start_at", "end_at", "is_published"])
+    list_display = getattr(
+        settings,
+        "EVENT_ADMIN_LIST_DISPLAY",
+        ["title", "start_at", "end_at", "is_published"],
+    )
 
-    fieldsets = getattr(settings, "EVENT_ADMIN_FIELDSETS", (
+    fieldsets = getattr(
+        settings,
+        "EVENT_ADMIN_FIELDSETS",
         (
-            "Details",
-            {
-                "fields": [
-                    "title",
-                    "slug",
-                    "intro",
-                    "start_at",
-                    "end_at",
-                    "address",
-                    "location",
-                    "tags",
-                    "is_published",
-                    "publish_at",
-                ]
-            },
+            (
+                "Details",
+                {
+                    "fields": [
+                        "title",
+                        "slug",
+                        "intro",
+                        "start_at",
+                        "end_at",
+                        "address",
+                        "location",
+                        "tags",
+                        "is_published",
+                        "publish_at",
+                    ]
+                },
+            ),
+            ("Image", {"fields": ["photo"]}),
+            ("Metadata", {"fields": ["created_at", "updated_at"]}),
         ),
-        ("Image", {"fields": ["photo"]}),
-        ("Metadata", {"fields": ["created_at", "updated_at"]}),
-    ))
+    )
 
-    readonly_fields = getattr(settings, "EVENT_ADMIN_READONLY_FIELDS", ["created_at", "updated_at"])
+    readonly_fields = getattr(
+        settings, "EVENT_ADMIN_READONLY_FIELDS", ["created_at", "updated_at"]
+    )
     prepopulated_fields = {"slug": ["title"]}
 
 
@@ -55,9 +65,13 @@ class LocationAdmin(admin.ModelAdmin):
     """
     Admin class for the location model
     """
+
     list_display = ["name", "lat", "lng"]
     readonly_fields = ["created_at", "updated_at"]
     fieldsets = [
         (None, {"fields": ["name", "lat", "lng"]}),
-        ("Meta Data", {"classes": ("collapse",), "fields": ["created_at", "updated_at"]}),
+        (
+            "Meta Data",
+            {"classes": ("collapse",), "fields": ["created_at", "updated_at"]},
+        ),
     ]

@@ -39,7 +39,7 @@ class Location(TimestampMixin):
     class Meta:
         verbose_name = "Location"
         verbose_name_plural = "Locations"
-        ordering =  ["name"]
+        ordering = ["name"]
 
     def __str__(self):
         """
@@ -52,6 +52,7 @@ class EventQuerySet(PublishingQuerySetMixin):
     """
     Custom QuerySet model to override the base one
     """
+
     pass
 
 
@@ -63,7 +64,9 @@ class Event(TimestampMixin, PublishingMixin):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     photo = FilerImageField(
-        related_name="%(app_label)s_%(class)s_images", on_delete=models.SET_NULL, null=True
+        related_name="%(app_label)s_%(class)s_images",
+        on_delete=models.SET_NULL,
+        null=True,
     )
     start_at = models.DateTimeField()
     end_at = models.DateTimeField(blank=True, null=True)
@@ -73,7 +76,9 @@ class Event(TimestampMixin, PublishingMixin):
         to=Tag, verbose_name="Tags", related_name="%(app_label)s_%(class)s_tags"
     )
     address = models.CharField(max_length=255)
-    location = models.ForeignKey(to=Location, null=True, on_delete=models.SET_NULL, related_name="events")
+    location = models.ForeignKey(
+        to=Location, null=True, on_delete=models.SET_NULL, related_name="events"
+    )
 
     objects = EventQuerySet.as_manager()
 
