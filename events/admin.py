@@ -52,10 +52,16 @@ class EventAdmin(admin.ModelAdmin):
             ("Metadata", {"classes": ("collapse",), "fields": ["created_at", "updated_at"]},),
         ),
     )
-
+    search_fields = getattr(
+        settings, "EVENT_ADMIN_SEARCH_FIELDS", ["title", "location"]
+    )
     readonly_fields = getattr(
         settings, "EVENT_ADMIN_READONLY_FIELDS", ["created_at", "updated_at"]
     )
+    list_filter = getattr(
+        settings, "EVENT_ADMIN_FILTER_FIELDS", ["is_published"]
+    )
+
     prepopulated_fields = {"slug": ["title"]}
 
 

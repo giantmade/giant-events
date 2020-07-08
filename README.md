@@ -20,6 +20,8 @@ This application exposes the following settings:
 - `EVENT_ADMIN_LIST_DISPLAY` is the field list for the admin index. This must be a list
 - `EVENT_ADMIN_FIELDSETS` allows the user to define the admin fieldset. This must be a list of two-tuples
 - `EVENT_ADMIN_READONLY_FIELDS` allows the user to configure readonly fields in the admin. This must be a list
+- `EVENT_ADMIN_SEARCH_FIELDS` allows the user to configure search fields in the admin. This must be a list
+- `EVENT_ADMIN_FILTER_FIELDS` allows the user to configure filter fields in the admin. This must be a list
 
 By default the app will use the templates that are defined inside the app directory itself. However if you wish to override which template is used you will need to create a directory in the projects template directory
 The structure should look something like this:
