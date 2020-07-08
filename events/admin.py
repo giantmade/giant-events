@@ -5,7 +5,7 @@ from .models import Event, Tag, Location
 
 
 @admin.register(Tag)
-class EventTagAdmin(admin.ModelAdmin):
+class TagAdmin(admin.ModelAdmin):
     """
     Admin config for EventTag model
     """
@@ -44,13 +44,12 @@ class EventAdmin(admin.ModelAdmin):
                         "address",
                         "location",
                         "tags",
-                        "is_published",
-                        "publish_at",
                     ]
                 },
             ),
             ("Image", {"fields": ["photo"]}),
-            ("Metadata", {"fields": ["created_at", "updated_at"]}),
+            ("Publishing", {"fields": ["is_published", "publish_at"]}),
+            ("Metadata", {"classes": ("collapse",), "fields": ["created_at", "updated_at"]},),
         ),
     )
 

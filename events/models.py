@@ -89,7 +89,7 @@ class Event(TimestampMixin, PublishingMixin):
 
     def __str__(self):
         """
-        Returns the event title when str() is called on the object
+        Returns the string representation of the event object
         """
         return self.title
 
