@@ -4,7 +4,12 @@ from django.urls import reverse
 from cms.models import PlaceholderField
 from filer.fields.image import FilerImageField
 
-from mixins.models import PublishingMixin, PublishingQuerySetMixin, TimestampMixin
+from mixins.models import (
+    PublishingMixin,
+    PublishingQuerySetMixin,
+    TimestampMixin,
+    URLMixin,
+)
 
 
 class Tag(TimestampMixin):
@@ -29,7 +34,7 @@ class Tag(TimestampMixin):
 
 class Location(TimestampMixin):
     """
-    Location that is to an event
+    Location that is tied to an event
     """
 
     name = models.CharField(max_length=255, unique=True)
@@ -56,7 +61,7 @@ class EventQuerySet(PublishingQuerySetMixin):
     pass
 
 
-class Event(TimestampMixin, PublishingMixin):
+class Event(TimestampMixin, PublishingMixin, URLMixin):
     """
     Model for creating and storing and event object
     """
@@ -79,6 +84,7 @@ class Event(TimestampMixin, PublishingMixin):
     location = models.ForeignKey(
         to=Location, null=True, on_delete=models.SET_NULL, related_name="events"
     )
+    cta_text = models.CharField(max_length=255, blank=True)
 
     objects = EventQuerySet.as_manager()
 
