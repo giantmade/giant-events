@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "giant-events"
-version = "0.2.1"
+version = "0.2.2"
 description = "A small reusable package that adds an Events app to a project"
 authors = ["Will-Hoey <will.hoey@giantmade.com>"]
 license = "MIT"
@@ -24,7 +24,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.6"
-giant-mixins = "^0.1.1"
+giant-mixins = "*"
 django-filer = "^1.7.1"
 
 [tool.poetry.dev-dependencies]
