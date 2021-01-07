@@ -1,7 +1,7 @@
-from django.utils import timezone
-
 import pytest
 from events.models import Event, Tag
+
+from .conftest import *
 
 
 class TestTag:
@@ -41,35 +41,51 @@ class TestEvent:
         assert event.get_absolute_url() == "/events/test-title/"
 
 
+@pytest.mark.django_db
 class TestEventQuerySet:
     """
     Test case for the EventQuerySet class
     """
 
-    @pytest.mark.django_db
-    def test_published_queryset(self):
+    def test_published_queryset(self, unpublished_event, published_event):
         """
         Test that the .published method returns the correct queryset objects
         """
 
-        # Should not be present in the queryset
-        event_one = Event.objects.create(
-            title="Event One",
-            slug="event-one",
-            start_at=timezone.now(),
-            is_published=False,
-            publish_at=timezone.now() + timezone.timedelta(hours=1),
-        )
-        # Should be present in the queryset
-        event_two = Event.objects.create(
-            title="Event Two",
-            slug="event-two",
-            start_at=timezone.now(),
-            is_published=True,
-            publish_at=timezone.now() - timezone.timedelta(hours=1),
-        )
-
         expected_number_of_objects = 1
         assert Event.objects.published().count() == expected_number_of_objects
-        assert event_two in Event.objects.published()
-        assert event_one not in Event.objects.published()
+        assert published_event in Event.objects.published()
+        assert unpublished_event not in Event.objects.published()
+
+    def test_future_queryset(self, published_event, unpublished_event):
+        """
+        Test that the future method returns only items with a future date
+        """
+
+        future_event = published_event
+        past_event = unpublished_event
+        past_event.is_published = True
+        past_event.publish_at = timezone.now()
+
+        expected_number_of_objects = 1
+
+        assert Event.objects.future().count() == expected_number_of_objects
+        assert future_event in Event.objects.future()
+        assert past_event not in Event.objects.future()
+
+    def test_past_queryset(self, published_event, unpublished_event):
+        """
+        Test that the past method returns only items with a future date
+        """
+
+        future_event = published_event
+        past_event = unpublished_event
+        past_event.is_published = True
+        past_event.publish_at = timezone.now()
+        past_event.save()
+
+        expected_number_of_objects = 1
+
+        assert Event.objects.future().count() == expected_number_of_objects
+        assert future_event not in Event.objects.past()
+        assert past_event in Event.objects.past()
