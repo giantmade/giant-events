@@ -5,6 +5,8 @@ from django.utils import timezone
 import pytest
 from events import models
 
+from .conftest import *
+
 
 @pytest.mark.django_db
 class TestEventView:
@@ -40,19 +42,14 @@ class TestEventView:
         response = client.get(reverse("events:index"))
         assert response.status_code == 200
 
-    def test_unpublished_returns_404(self, event_instance):
+    def test_unpublished_returns_404(self, unpublished_event):
         """
         Test to check that an unpublished event returns a 404
         """
         client = Client()
-        event = models.Event.objects.create(
-            title="Event Two",
-            slug="event-two",
-            start_at=timezone.now(),
-            is_published=False,
-            publish_at=timezone.now() - timezone.timedelta(hours=1),
+        response = client.get(
+            reverse("events:detail", kwargs={"slug": unpublished_event.slug})
         )
-        response = client.get(reverse("events:detail", kwargs={"slug": event.slug}))
 
         assert response.status_code == 404
 
