@@ -3,6 +3,7 @@ from django.urls import reverse
 
 from cms.models import PlaceholderField
 from filer.fields.image import FilerImageField
+from django.db.models.functions import Now
 
 from mixins.models import (
     PublishingMixin,
@@ -58,7 +59,23 @@ class EventQuerySet(PublishingQuerySetMixin):
     Custom QuerySet model to override the base one
     """
 
-    pass
+    def future(self, user=None):
+        """
+        Return the published queryset for future events, or all if user is admin
+        """
+        if user and user.is_staff:
+            return self.all()
+
+        return self.filter(is_published=True, start_at__gte=Now())
+
+    def past(self, user=None):
+        """
+        Return the published queryset for past events, or all if user is admin
+        """
+        if user and user.is_staff:
+            return self.all()
+
+        return self.filter(is_published=True, start_at__lt=Now())
 
 
 class Event(TimestampMixin, PublishingMixin, URLMixin):
