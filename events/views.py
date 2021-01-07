@@ -19,6 +19,14 @@ class EventIndex(ListView):
         """
         return Event.objects.published(user=self.request.user).order_by("-publish_at")
 
+    def get_context_data(self, **kwargs):
+        """
+        Update the context with extra args
+        """
+        context = super().get_context_data(**kwargs)
+        context["future_events"] = Event.objects.future(user=self.request.user).order_by("-start_at")
+        context["past_events"] = Event.objects.past(user=self.request.user).order_by("-start_at")
+        return context
 
 class EventDetail(DetailView):
     """
