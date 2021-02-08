@@ -61,21 +61,16 @@ class EventQuerySet(PublishingQuerySetMixin):
 
     def future(self, user=None):
         """
-        Return the published queryset for future events, or all if user is admin
+        Return the published queryset for future events
         """
-        if user and user.is_staff:
-            return self.all()
-
-        return self.filter(is_published=True, start_at__gte=Now())
+        return self.published().filter(start_at__gte=Now())
 
     def past(self, user=None):
         """
-        Return the published queryset for past events, or all if user is admin
+        Return the published queryset for past events
         """
-        if user and user.is_staff:
-            return self.all()
 
-        return self.filter(is_published=True, start_at__lt=Now())
+        return self.published().filter(start_at__lt=Now())
 
 
 class Event(TimestampMixin, PublishingMixin, URLMixin):
@@ -95,9 +90,12 @@ class Event(TimestampMixin, PublishingMixin, URLMixin):
     intro = models.CharField(max_length=255)
     content = PlaceholderField(slotname="event_content", related_name="event_content")
     tags = models.ManyToManyField(
-        to=Tag, verbose_name="Tags", related_name="%(app_label)s_%(class)s_tags"
+        to=Tag,
+        verbose_name="Tags",
+        related_name="%(app_label)s_%(class)s_tags",
+        blank=True,
     )
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, blank=True)
     location = models.ForeignKey(
         to=Location, null=True, on_delete=models.SET_NULL, related_name="events"
     )
