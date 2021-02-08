@@ -63,12 +63,17 @@ class EventQuerySet(PublishingQuerySetMixin):
         """
         Return the published queryset for future events
         """
+        if user and user.is_staff:
+            return self.filter(start_at__gte=Now())
+    
         return self.published().filter(start_at__gte=Now())
 
     def past(self, user=None):
         """
         Return the published queryset for past events
         """
+        if user and user.is_staff:
+            return self.filter(start_at__lt=Now())
 
         return self.published().filter(start_at__lt=Now())
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "giant-events"
-version = "0.2.3.1"
+version = "0.2.3.3"
 description = "A small reusable package that adds an Events app to a project"
 authors = ["Will-Hoey <will.hoey@giantmade.com>"]
 license = "MIT"
