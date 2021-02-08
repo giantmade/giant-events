@@ -63,14 +63,14 @@ class EventQuerySet(PublishingQuerySetMixin):
         """
         Return the published queryset for future events
         """
-        return self.published().filter(start_at__gte=Now())
+        return self.published(user=self.request.user).filter(start_at__gte=Now())
 
     def past(self, user=None):
         """
         Return the published queryset for past events
         """
 
-        return self.published().filter(start_at__lt=Now())
+        return self.published(user=self.request.user).filter(start_at__lt=Now())
 
 
 class Event(TimestampMixin, PublishingMixin, URLMixin):
