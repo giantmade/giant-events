@@ -63,19 +63,13 @@ class EventQuerySet(PublishingQuerySetMixin):
         """
         Return the published queryset for future events
         """
-        if user and user.is_staff:
-            return self.filter(start_at__gte=Now())
-    
-        return self.published().filter(start_at__gte=Now())
+        return self.published(user=user).filter(start_at__gte=Now())
 
     def past(self, user=None):
         """
         Return the published queryset for past events
         """
-        if user and user.is_staff:
-            return self.filter(start_at__lt=Now())
-
-        return self.published().filter(start_at__lt=Now())
+        return self.published(user=user).filter(start_at__lt=Now())
 
 
 class Event(TimestampMixin, PublishingMixin, URLMixin):
@@ -109,7 +103,9 @@ class Event(TimestampMixin, PublishingMixin, URLMixin):
     objects = EventQuerySet.as_manager()
 
     class Meta:
-        ordering = ["start_at"]
+        # We need both orders to make sure that hours are respected. Purely using the start_at
+        # would not correctly sort 2 items with the same date but different hours.
+        ordering = ["start_at__date", "start_at__time"]
         verbose_name = "Event"
         verbose_name_plural = "Events"
 
