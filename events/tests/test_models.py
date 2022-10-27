@@ -75,7 +75,7 @@ class TestEventQuerySet:
 
     def test_past_queryset(self, published_event, unpublished_event):
         """
-        Test that the past method returns only items with a future date
+        Test that the past method returns only items with a date in the past
         """
 
         future_event = published_event
