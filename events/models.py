@@ -1,10 +1,9 @@
-from django.db import models
-from django.urls import reverse
-
 from cms.models import PlaceholderField
+from django.db import models
+from django.db.models import Q
+from django.urls import reverse
+from django.utils import timezone
 from filer.fields.image import FilerImageField
-from django.db.models.functions import Now
-
 from mixins.models import (
     PublishingMixin,
     PublishingQuerySetMixin,
@@ -61,15 +60,19 @@ class EventQuerySet(PublishingQuerySetMixin):
 
     def future(self, user=None):
         """
-        Return the published queryset for future events
+        Return the published queryset for future events. Filter on start_date OR end_date being in
+        the future as some events don't have end dates.
         """
-        return self.published(user=user).filter(start_at__gte=Now())
+        now = timezone.now()
+        return self.published(user=user).filter(
+            Q(start_at__gte=now) | Q(end_at__gte=now)
+        )
 
     def past(self, user=None):
         """
-        Return the published queryset for past events
+        Return the published queryset for past events.
         """
-        return self.published(user=user).filter(start_at__lt=Now())
+        return self.published(user=user).filter(end_at__lt=timezone.now())
 
 
 class Event(TimestampMixin, PublishingMixin, URLMixin):
