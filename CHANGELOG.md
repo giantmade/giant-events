@@ -1,6 +1,9 @@
+## 0.2.6
+- Fix admin search on foreign key field (location).
+
 ## 0.2.5
 - Use `timezone.now()` instead of `Now()` when evaluating past/future querysets
-- Update the past/future filtering conditions so events are moved prematurely.
+- Update the past/future filtering conditions so events aren't moved prematurely.
 
 ## 0.1.2
 - Combine author name fields into one
