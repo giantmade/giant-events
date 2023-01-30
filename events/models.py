@@ -91,6 +91,13 @@ class Event(TimestampMixin, PublishingMixin, URLMixin):
     end_at = models.DateTimeField(blank=True, null=True)
     intro = models.CharField(max_length=255)
     content = PlaceholderField(slotname="event_content", related_name="event_content")
+    hero_image = FilerImageField(
+        related_name="+",
+        help_text="Select an image that will be displayed as the hero for the event detail page. ",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
     tags = models.ManyToManyField(
         to=Tag,
         verbose_name="Tags",

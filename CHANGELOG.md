@@ -1,3 +1,11 @@
+## 0.2.8
+- Fixed search on admin.
+- Added hero image.
+
+## 0.2.7
+- Use `timezone.now()` instead of `Now()` when evaluating past/future querysets
+- Update the past/future filtering conditions so events are moved prematurely.
+
 ## 0.2.5
 - Use `timezone.now()` instead of `Now()` when evaluating past/future querysets
 - Update the past/future filtering conditions so events are moved prematurely.
