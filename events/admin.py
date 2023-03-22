@@ -23,7 +23,7 @@ class EventAdmin(admin.ModelAdmin):
     """
 
     list_display = ["title", "start_at", "end_at", "is_published"]
-    search_fields = ["title", "location"]
+    search_fields = ["title", "location__name"]
     readonly_fields = ["created_at", "updated_at"]
     list_filter = ["is_published"]
     prepopulated_fields = {"slug": ["title"]}
@@ -44,7 +44,7 @@ class EventAdmin(admin.ModelAdmin):
                 ]
             },
         ),
-        ("Image", {"fields": ["photo"]}),
+        ("Image", {"fields": ["photo", "hero_image"]}),
         ("Publishing", {"fields": ["is_published", "publish_at"]}),
         (
             "Metadata",
