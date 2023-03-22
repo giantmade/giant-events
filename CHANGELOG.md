@@ -1,3 +1,6 @@
+## 0.2.8.1
+- Corrected ordering in the index view to be based upon start date instead of publish date.
+
 ## 0.2.8
 - Fixed search on admin.
 - Added hero image.
