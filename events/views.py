@@ -24,9 +24,9 @@ class EventIndex(ListView):
         Update the context with extra args
         """
         context = super().get_context_data(**kwargs)
-        context["future_events"] = Event.objects.future(user=self.request.user)
+        context["future_events"] = Event.objects.future(user=self.request.user).order_by("start_at")
         # We want the most recent past event first here so we reverse the default order
-        context["past_events"] = Event.objects.past(user=self.request.user).reverse()
+        context["past_events"] = Event.objects.past(user=self.request.user).order_by("-start_at")
         return context
 
 
